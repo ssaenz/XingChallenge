@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
+    private RecyclerViewAdapter mRecyclerViewAdapter = new RecyclerViewAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,5 +19,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadLaoutViews() {
         mRecyclerView = findViewById(R.id.rv_list);
+        mRecyclerView.setAdapter(mRecyclerViewAdapter);
     }
 }

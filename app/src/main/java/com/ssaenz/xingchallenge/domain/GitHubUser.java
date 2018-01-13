@@ -6,7 +6,7 @@ package com.ssaenz.xingchallenge.domain;
  * Created by ssaenz on 13/01/18.
  */
 
-class GitHubUser {
+public class GitHubUser {
 
     private String login;
     private String htmlUrl;

@@ -1,6 +1,8 @@
 package com.ssaenz.xingchallenge;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 /**
@@ -11,7 +13,9 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        View repoItemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_repo, parent, false);
+        return new RecyclerViewHolder(repoItemView);
     }
 
     @Override

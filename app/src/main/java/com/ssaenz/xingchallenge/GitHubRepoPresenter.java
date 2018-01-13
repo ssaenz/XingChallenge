@@ -2,6 +2,7 @@ package com.ssaenz.xingchallenge;
 
 import com.ssaenz.xingchallenge.domain.GitHubRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,8 +13,12 @@ public class GitHubRepoPresenter {
 
     private List<GitHubRepository> repositories;
 
-    public GitHubRepoPresenter(List<GitHubRepository> repositories) {
-        this.repositories = repositories;
+    public GitHubRepoPresenter() {
+        this.repositories = new ArrayList<>();
+    }
+
+    public void addRepositories (List<GitHubRepository> repositories) {
+        this.repositories.addAll(repositories);
     }
 
     public void showRepositoryAtPosition (GitHubRepoView view, int position) {

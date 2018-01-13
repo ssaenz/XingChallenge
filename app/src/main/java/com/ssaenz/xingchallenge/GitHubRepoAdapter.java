@@ -5,6 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ssaenz.xingchallenge.domain.GitHubRepository;
+
+import java.util.List;
+
 /**
  * Provides a binding between the view and the presenter.
  */
@@ -27,6 +31,11 @@ class GitHubRepoAdapter extends RecyclerView.Adapter<GitHubRepoHolder> {
     @Override
     public void onBindViewHolder(GitHubRepoHolder holder, int position) {
         presenter.showRepositoryAtPosition(holder, position);
+    }
+
+    public void addRepositories (List<GitHubRepository> repositories) {
+        presenter.addRepositories(repositories);
+        notifyDataSetChanged();
     }
 
     @Override

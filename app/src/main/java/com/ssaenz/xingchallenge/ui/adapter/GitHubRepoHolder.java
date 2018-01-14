@@ -1,15 +1,18 @@
-package com.ssaenz.xingchallenge;
+package com.ssaenz.xingchallenge.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
+import com.ssaenz.xingchallenge.R;
+import com.ssaenz.xingchallenge.ui.presenter.GitHubRepoView;
 
 /**
  * View holder to show the GitHubRepository information.
  *
  */
 
-class GitHubRepoHolder extends RecyclerView.ViewHolder implements GitHubRepoView {
+public class GitHubRepoHolder extends RecyclerView.ViewHolder implements GitHubRepoView {
 
     TextView repoName;
     TextView ownerName;

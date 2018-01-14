@@ -1,4 +1,4 @@
-package com.ssaenz.xingchallenge;
+package com.ssaenz.xingchallenge.ui.presenter;
 
 /**
  * This interface has to be implemented by the view layer.

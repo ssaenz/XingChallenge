@@ -1,4 +1,4 @@
-package com.ssaenz.xingchallenge;
+package com.ssaenz.xingchallenge.ui.presenter;
 
 import com.ssaenz.xingchallenge.domain.GitHubRepository;
 

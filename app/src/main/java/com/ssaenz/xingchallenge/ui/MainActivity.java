@@ -1,18 +1,19 @@
-package com.ssaenz.xingchallenge;
+package com.ssaenz.xingchallenge.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.ssaenz.xingchallenge.R;
 import com.ssaenz.xingchallenge.data.EndpointFactory;
 import com.ssaenz.xingchallenge.data.GitHubService;
+import com.ssaenz.xingchallenge.ui.adapter.GitHubRepoAdapter;
+import com.ssaenz.xingchallenge.ui.presenter.GitHubRepoPresenter;
 
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.schedulers.SchedulerPoolFactory;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {

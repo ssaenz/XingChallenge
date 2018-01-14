@@ -27,6 +27,7 @@ public class GitHubRepoPresenter {
         view.setOwnerName(repo.getOwner().getLogin());
         view.setRepoDescription(repo.getDescription());
         view.setRepoName(repo.getName());
+        view.setFork(repo.isFork());
     }
 
     public int getRepositoriesCount() {

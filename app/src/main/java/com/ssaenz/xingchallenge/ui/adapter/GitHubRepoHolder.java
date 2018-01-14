@@ -17,12 +17,14 @@ public class GitHubRepoHolder extends RecyclerView.ViewHolder implements GitHubR
     TextView repoName;
     TextView ownerName;
     TextView repoDescription;
+    View view;
 
     public GitHubRepoHolder(View repoItemView) {
         super(repoItemView);
         repoName = repoItemView.findViewById(R.id.tv_repo_name);
         ownerName = repoItemView.findViewById(R.id.tv_repo_owner);
         repoDescription = repoItemView.findViewById(R.id.tv_repo_description);
+        view = repoItemView;
     }
 
     @Override
@@ -38,5 +40,11 @@ public class GitHubRepoHolder extends RecyclerView.ViewHolder implements GitHubR
     @Override
     public void setRepoDescription(String repoDescription) {
         this.repoDescription.setText(repoDescription);
+    }
+
+    @Override
+    public void setFork(boolean isFork) {
+        int resource = isFork? R.color.xingGreen : R.color.white;
+        view.setBackgroundColor(view.getResources().getColor(resource));
     }
 }

@@ -33,6 +33,7 @@ public class PresenterTest {
     @Before
     public void setUp () {
         MockitoAnnotations.initMocks(this);
+        presenter = new GitHubRepoPresenter();
         presenter.addRepositories(createMockData(MOCK_REPOS_SIZE));
         presenter.showRepositoryAtPosition(repoView, 0);
     }
@@ -47,21 +48,23 @@ public class PresenterTest {
         verify(repoView).setRepoName("repo 0");
         verify(repoView).setRepoDescription("Description repo 0");
         verify(repoView).setOwnerName(MOCK_OWNER_LOGIN);
+        verify(repoView).setFork(true);
     }
 
     private List<GitHubRepository> createMockData (int size) {
         List<GitHubRepository> repositories = new ArrayList<>();
         for (int i = 0; i < size; i ++) {
-            repositories.add(createRepo("repo " + i, "Description repo " + i));
+            repositories.add(createRepo("repo " + i, "Description repo " + i, i % 2 == 0));
         }
         return repositories;
     }
 
-    private GitHubRepository createRepo (String name, String description) {
+    private GitHubRepository createRepo (String name, String description, boolean isFork) {
         GitHubRepository repo = new GitHubRepository();
         repo.setName(name);
         repo.setDescription(description);
         repo.setOwner(createOwner());
+        repo.setFork(isFork);
         return repo;
     }
 

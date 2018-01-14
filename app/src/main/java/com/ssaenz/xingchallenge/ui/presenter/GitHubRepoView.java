@@ -12,4 +12,6 @@ public interface GitHubRepoView {
     public void setOwnerName(String ownerName);
 
     public void setRepoDescription(String repoDescription);
+
+    public void setFork (boolean isFork);
 }

@@ -34,7 +34,9 @@ public class GitHubRepoAdapter extends RecyclerView.Adapter<GitHubRepoHolder> {
     public GitHubRepoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View repoItemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_repo, parent, false);
-        repoItemView.setOnLongClickListener(this.onLongClickListener);
+        if (this.onLongClickListener != null) {
+            repoItemView.setOnLongClickListener(this.onLongClickListener);
+        }
         return new GitHubRepoHolder(repoItemView);
     }
 

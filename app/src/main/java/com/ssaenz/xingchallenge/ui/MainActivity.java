@@ -1,14 +1,22 @@
 package com.ssaenz.xingchallenge.ui;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.ssaenz.xingchallenge.R;
 import com.ssaenz.xingchallenge.data.EndpointFactory;
 import com.ssaenz.xingchallenge.data.GitHubService;
+import com.ssaenz.xingchallenge.domain.GitHubRepository;
 import com.ssaenz.xingchallenge.ui.adapter.GitHubRepoAdapter;
 import com.ssaenz.xingchallenge.ui.presenter.GitHubRepoPresenter;
 
@@ -48,6 +56,13 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         }
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        GitHubRepository repo = (GitHubRepository) v.getTag();
+        openDialog(repo);
+        return false;
+    }
+
     private void loadAndConfigureUI() {
         RecyclerView recyclerView = findViewById(R.id.rv_list);
 
@@ -78,8 +93,26 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         mDisposable.add(subscribe);
     }
 
-    @Override
-    public boolean onLongClick(View v) {
-        return false;
+    private void openBrowser(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        this.startActivity(intent);
+    }
+
+   private void openDialog (GitHubRepository repo) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(repo.getName())
+                .setMessage(R.string.dialog_open_repo_message)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(R.string.button_open_repo, (dialog, which) -> {
+                    dialog.dismiss();
+                    openBrowser(repo.getHtmlUrl());
+                })
+                .setNeutralButton(R.string.button_open_owner, (dialog, which) -> {
+                    dialog.dismiss();
+                    openBrowser(repo.getOwner().getHtmlUrl());
+                })
+                .setNegativeButton(R.string.button_cancel, (dialog, which) -> {
+                    dialog.dismiss();
+                }).show();
     }
 }

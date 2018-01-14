@@ -10,8 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.ssaenz.xingchallenge.R;
-import com.ssaenz.xingchallenge.data.EndpointFactory;
-import com.ssaenz.xingchallenge.data.GitHubService;
+import com.ssaenz.xingchallenge.data.network.EndpointFactory;
+import com.ssaenz.xingchallenge.data.network.GitHubService;
 import com.ssaenz.xingchallenge.domain.GitHubRepository;
 import com.ssaenz.xingchallenge.ui.adapter.GitHubRepoAdapter;
 import com.ssaenz.xingchallenge.ui.presenter.GitHubRepoPresenter;

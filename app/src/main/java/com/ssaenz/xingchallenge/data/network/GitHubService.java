@@ -1,4 +1,4 @@
-package com.ssaenz.xingchallenge.data;
+package com.ssaenz.xingchallenge.data.network;
 
 import com.ssaenz.xingchallenge.domain.GitHubRepository;
 

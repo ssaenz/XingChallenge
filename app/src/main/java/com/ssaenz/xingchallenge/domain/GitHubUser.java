@@ -1,5 +1,7 @@
 package com.ssaenz.xingchallenge.domain;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Stores information about a GitHub user
  *
@@ -8,6 +10,8 @@ package com.ssaenz.xingchallenge.domain;
 public class GitHubUser {
 
     private String login;
+
+    @SerializedName("html_url")
     private String htmlUrl;
 
     public String getLogin() {

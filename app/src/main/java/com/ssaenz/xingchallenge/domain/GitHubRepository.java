@@ -1,5 +1,7 @@
 package com.ssaenz.xingchallenge.domain;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Stores information about a GitHub repository
  *
@@ -8,10 +10,15 @@ package com.ssaenz.xingchallenge.domain;
 public class GitHubRepository {
 
     private String name;
-    private String description;
-    private GitHubUser owner;
-    private boolean fork;
 
+    private String description;
+
+    private GitHubUser owner;
+
+    @SerializedName("html_url")
+    private String htmlUrl;
+
+    private boolean fork;
 
     public String getName() {
         return name;
@@ -43,5 +50,13 @@ public class GitHubRepository {
 
     public void setFork(boolean fork) {
         this.fork = fork;
+    }
+
+    public String getHtmlUrl() {
+        return htmlUrl;
+    }
+
+    public void setHtmlUrl(String htmlUrl) {
+        this.htmlUrl = htmlUrl;
     }
 }

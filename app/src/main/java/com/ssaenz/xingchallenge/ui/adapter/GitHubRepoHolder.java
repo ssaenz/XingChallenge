@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ssaenz.xingchallenge.R;
+import com.ssaenz.xingchallenge.domain.GitHubRepository;
 import com.ssaenz.xingchallenge.ui.presenter.GitHubRepoView;
 
 /**
@@ -14,10 +15,10 @@ import com.ssaenz.xingchallenge.ui.presenter.GitHubRepoView;
 
 public class GitHubRepoHolder extends RecyclerView.ViewHolder implements GitHubRepoView {
 
-    TextView repoName;
-    TextView ownerName;
-    TextView repoDescription;
-    View view;
+    private TextView repoName;
+    private TextView ownerName;
+    private TextView repoDescription;
+    private View view;
 
     public GitHubRepoHolder(View repoItemView) {
         super(repoItemView);
@@ -26,6 +27,7 @@ public class GitHubRepoHolder extends RecyclerView.ViewHolder implements GitHubR
         repoDescription = repoItemView.findViewById(R.id.tv_repo_description);
         view = repoItemView;
     }
+
 
     @Override
     public void setRepoName(String repoName) {
@@ -47,4 +49,10 @@ public class GitHubRepoHolder extends RecyclerView.ViewHolder implements GitHubR
         int resource = isFork? R.color.xingGreen : R.color.white;
         view.setBackgroundColor(view.getResources().getColor(resource));
     }
+
+    @Override
+    public void setTag(GitHubRepository repoTag) {
+        view.setTag(repoTag);
+    }
+
 }

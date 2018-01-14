@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">XingChallenge</string>
+    <string name="dialog_open_repo_message">Would you like to open the repository page or visit the user profile?</string>
+    <string name="button_open_repo">Open repo</string>
+    <string name="button_open_owner">Open user</string>
+    <string name="button_cancel">Cancel</string>
 </resources>

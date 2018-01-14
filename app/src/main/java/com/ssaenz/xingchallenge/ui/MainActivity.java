@@ -1,6 +1,5 @@
 package com.ssaenz.xingchallenge.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,10 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.ssaenz.xingchallenge.R;
 import com.ssaenz.xingchallenge.data.EndpointFactory;
@@ -20,9 +16,12 @@ import com.ssaenz.xingchallenge.domain.GitHubRepository;
 import com.ssaenz.xingchallenge.ui.adapter.GitHubRepoAdapter;
 import com.ssaenz.xingchallenge.ui.presenter.GitHubRepoPresenter;
 
+import java.util.List;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
@@ -89,8 +88,38 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         Disposable subscribe = mGitHubService.listRepos(XING_LOGIN, page, size, GITHUB_TOKEN)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(repos -> mGitHubRepoAdapter.addRepositories(repos));
+                .subscribeWith(new DisposableObserver<List<GitHubRepository>>() {
+                    @Override
+                    public void onNext(List<GitHubRepository> repositories) {
+                        mGitHubRepoAdapter.addRepositories(repositories);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        reconnectDialog(page, size);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        //Do nothing
+                    }
+                });
         mDisposable.add(subscribe);
+    }
+
+    private void reconnectDialog (final int page, final int size) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.dialog_title_no_connection_error)
+                .setMessage(R.string.dialog_message_no_connectio_error)
+                .setPositiveButton(R.string.button_retry, (dialog, which) -> {
+                    loadGitHubRepos(page, size);
+                    dialog.dismiss();
+                })
+                .setNegativeButton(R.string.button_exit_app, (dialog, which) -> {
+                    dialog.dismiss();
+                    MainActivity.this.finish();
+                })
+                .show();
     }
 
     private void openBrowser(String url) {
@@ -98,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         this.startActivity(intent);
     }
 
-   private void openDialog (GitHubRepository repo) {
+    private void openDialog (GitHubRepository repo) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(repo.getName())
                 .setMessage(R.string.dialog_open_repo_message)

@@ -4,4 +4,8 @@
     <string name="button_open_repo">Open repo</string>
     <string name="button_open_owner">Open user</string>
     <string name="button_cancel">Cancel</string>
+    <string name="dialog_title_no_connection_error">Unable to get repository list</string>
+    <string name="dialog_message_no_connectio_error">Do you want to try again?</string>
+    <string name="button_retry">retry</string>
+    <string name="button_exit_app">exit</string>
 </resources>

@@ -20,21 +20,22 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String GITHUB_URL = "https://api.github.com";
     private static final String XING_LOGIN = "xing";
+    private static final String GITHUB_TOKEN = "790d0fa04804386d0ff6ca9a6097aa28b52ad033";
     private static final int FIRST_PAGE = 1;
     private static final int PAGE_SIZE = 10;
 
     private RecyclerView mRecyclerView;
     private GitHubRepoPresenter mGitHubRepoPresenter = new GitHubRepoPresenter();
     private GitHubRepoAdapter mGitHubRepoAdapter = new GitHubRepoAdapter(mGitHubRepoPresenter);
-    private EndpointFactory mEndpointFactory = new EndpointFactory();
+    private EndpointFactory<GitHubService> mEndpointFactory = new EndpointFactory<>();
     private GitHubService mGitHubService = (GitHubService) mEndpointFactory.createEndpoint(GitHubService.class, GITHUB_URL);
-    CompositeDisposable mDisposable = new CompositeDisposable();
+    private CompositeDisposable mDisposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loadGitHubRepos();
+        loadGitHubRepos(FIRST_PAGE, PAGE_SIZE);
         loadLayoutViews();
     }
 
@@ -46,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadGitHubRepos() {
-        Disposable subscribe = mGitHubService.listRepos(XING_LOGIN, FIRST_PAGE, PAGE_SIZE)
+    private void loadGitHubRepos(final int page, final int size) {
+        Disposable subscribe = mGitHubService.listRepos(XING_LOGIN, page, size, GITHUB_TOKEN)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(repos -> mGitHubRepoAdapter.addRepositories(repos));
@@ -58,6 +59,13 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.rv_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         mRecyclerView.setAdapter(mGitHubRepoAdapter);
+        mRecyclerView.addOnScrollListener(new EndScrollListener() {
+
+            @Override
+            public void onScrollEnd(int totalItemCount) {
+                loadGitHubRepos(totalItemCount / PAGE_SIZE +1, PAGE_SIZE);
+            }
+        });
     }
 
 }

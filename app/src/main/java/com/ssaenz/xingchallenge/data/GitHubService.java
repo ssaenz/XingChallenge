@@ -17,6 +17,9 @@ public interface GitHubService {
 
 
     @GET("users/{user}/repos")
-    public Observable<List<GitHubRepository>> listRepos (@Path("user") String user, @Query("page") int page, @Query("per_page") int size);
+    public Observable<List<GitHubRepository>> listRepos (@Path("user") String user,
+                                                         @Query("page") int page,
+                                                         @Query("per_page") int size,
+                                                         @Query("access_token") String token);
 
 }

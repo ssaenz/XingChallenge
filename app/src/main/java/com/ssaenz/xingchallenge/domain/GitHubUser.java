@@ -3,7 +3,6 @@ package com.ssaenz.xingchallenge.domain;
 /**
  * Stores information about a GitHub user
  *
- * Created by ssaenz on 13/01/18.
  */
 
 public class GitHubUser {

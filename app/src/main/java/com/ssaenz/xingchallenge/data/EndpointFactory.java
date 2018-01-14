@@ -10,6 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Factory to create endpoints
+ *
  */
 
 public class EndpointFactory<T> {

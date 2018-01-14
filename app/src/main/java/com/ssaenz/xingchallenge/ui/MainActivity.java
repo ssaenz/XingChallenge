@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.ssaenz.xingchallenge.R;
 import com.ssaenz.xingchallenge.data.EndpointFactory;
@@ -16,7 +17,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
 
     private static final String GITHUB_URL = "https://api.github.com";
     private static final String XING_LOGIN = "xing";
@@ -24,19 +25,19 @@ public class MainActivity extends AppCompatActivity {
     private static final int FIRST_PAGE = 1;
     private static final int PAGE_SIZE = 10;
 
-    private RecyclerView mRecyclerView;
-    private GitHubRepoPresenter mGitHubRepoPresenter = new GitHubRepoPresenter();
-    private GitHubRepoAdapter mGitHubRepoAdapter = new GitHubRepoAdapter(mGitHubRepoPresenter);
-    private EndpointFactory<GitHubService> mEndpointFactory = new EndpointFactory<>();
-    private GitHubService mGitHubService = (GitHubService) mEndpointFactory.createEndpoint(GitHubService.class, GITHUB_URL);
-    private CompositeDisposable mDisposable = new CompositeDisposable();
+    private GitHubRepoAdapter mGitHubRepoAdapter;
+    private GitHubService mGitHubService;
+    private CompositeDisposable mDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mGitHubService = new EndpointFactory<GitHubService>()
+                .createEndpoint(GitHubService.class, GITHUB_URL);
+        mDisposable = new CompositeDisposable();
+        loadAndConfigureUI();
         loadGitHubRepos(FIRST_PAGE, PAGE_SIZE);
-        loadLayoutViews();
     }
 
     @Override
@@ -47,6 +48,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void loadAndConfigureUI() {
+        RecyclerView recyclerView = findViewById(R.id.rv_list);
+
+        GitHubRepoPresenter gitHubRepoPresenter = new GitHubRepoPresenter();
+        mGitHubRepoAdapter = new GitHubRepoAdapter(gitHubRepoPresenter);
+        mGitHubRepoAdapter.setOnLongClickListener(this);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        recyclerView.setAdapter(mGitHubRepoAdapter);
+        recyclerView.addOnScrollListener(new EndScrollListener() {
+
+            @Override
+            public void onScrollEnd(int totalItemCount) {
+                loadGitHubRepos(getNextPage(totalItemCount), PAGE_SIZE);
+            }
+        });
+    }
+
+    private int getNextPage(int totalItemCount) {
+        return totalItemCount / PAGE_SIZE + 1;
+    }
+
     private void loadGitHubRepos(final int page, final int size) {
         Disposable subscribe = mGitHubService.listRepos(XING_LOGIN, page, size, GITHUB_TOKEN)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -55,17 +78,8 @@ public class MainActivity extends AppCompatActivity {
         mDisposable.add(subscribe);
     }
 
-    private void loadLayoutViews() {
-        mRecyclerView = findViewById(R.id.rv_list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        mRecyclerView.setAdapter(mGitHubRepoAdapter);
-        mRecyclerView.addOnScrollListener(new EndScrollListener() {
-
-            @Override
-            public void onScrollEnd(int totalItemCount) {
-                loadGitHubRepos(totalItemCount / PAGE_SIZE +1, PAGE_SIZE);
-            }
-        });
+    @Override
+    public boolean onLongClick(View v) {
+        return false;
     }
-
 }

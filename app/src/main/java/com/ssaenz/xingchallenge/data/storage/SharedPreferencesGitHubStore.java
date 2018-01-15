@@ -50,11 +50,12 @@ public class SharedPreferencesGitHubStore implements GitHubStore {
 
     @Override
     public List<GitHubRepository> listRepos(int page, int size) {
+
         List<GitHubRepository> repos = new ArrayList<>();
         for (int i = 0; i < size; i ++) {
             String jsonRepo = sharedPreferences.getString(repoKey(page, size, i), null);
             if (jsonRepo == null) {
-                return null;
+                break;
             }
             GitHubRepository repo = gson.fromJson(jsonRepo, GitHubRepository.class);
             repos.add(repo);
@@ -65,7 +66,7 @@ public class SharedPreferencesGitHubStore implements GitHubStore {
     @Override
     public void saveReposPage(List<GitHubRepository> repos, int page, int size) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        for (int i = 0; i < size; i ++) {
+        for (int i = 0; i < repos.size(); i ++) {
             String jsonRepo = gson.toJson(repos.get(i));
             editor.putString(repoKey(page, size, i), jsonRepo);
         }
@@ -77,6 +78,10 @@ public class SharedPreferencesGitHubStore implements GitHubStore {
     @Override
     public void clear() {
         sharedPreferences.edit().clear().apply();
+    }
+
+    public long lastUpdate () {
+        return sharedPreferences.getLong(TIMESTAMP_KEY, -1);
     }
 
     public String repoKey (int page, int size, int index) {

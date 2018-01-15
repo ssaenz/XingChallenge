@@ -48,7 +48,6 @@ public class SharedPreferencesGitHubStore {
         return store;
     }
 
-    @Override
     public List<GitHubRepository> listRepos(int page, int size) {
 
         List<GitHubRepository> repos = new ArrayList<>();
@@ -63,7 +62,6 @@ public class SharedPreferencesGitHubStore {
         return repos;
     }
 
-    @Override
     public void saveReposPage(List<GitHubRepository> repos, int page, int size) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         for (int i = 0; i < repos.size(); i ++) {
@@ -75,7 +73,6 @@ public class SharedPreferencesGitHubStore {
         editor.apply();
     }
 
-    @Override
     public void clear() {
         sharedPreferences.edit().clear().apply();
     }

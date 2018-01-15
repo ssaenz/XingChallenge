@@ -6,7 +6,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.ssaenz.xingchallenge.domain.GitHubRepository;
-import com.ssaenz.xingchallenge.storage.SharedPreferencesGitHubStore;
+import com.ssaenz.xingchallenge.data.storage.SharedPreferencesGitHubStore;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,9 +15,9 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import static com.ssaenz.xingchallenge.GitHubReposMother.createMockData;
-import static com.ssaenz.xingchallenge.storage.SharedPreferencesGitHubStore.LAST_PAGE_KEY;
-import static com.ssaenz.xingchallenge.storage.SharedPreferencesGitHubStore.PREFS_NAME;
-import static com.ssaenz.xingchallenge.storage.SharedPreferencesGitHubStore.TIMESTAMP_KEY;
+import static com.ssaenz.xingchallenge.data.storage.SharedPreferencesGitHubStore.LAST_PAGE_KEY;
+import static com.ssaenz.xingchallenge.data.storage.SharedPreferencesGitHubStore.PREFS_NAME;
+import static com.ssaenz.xingchallenge.data.storage.SharedPreferencesGitHubStore.TIMESTAMP_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

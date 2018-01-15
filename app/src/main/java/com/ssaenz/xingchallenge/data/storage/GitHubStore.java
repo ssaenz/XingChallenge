@@ -1,4 +1,4 @@
-package com.ssaenz.xingchallenge.storage;
+package com.ssaenz.xingchallenge.data.storage;
 
 import com.ssaenz.xingchallenge.domain.GitHubRepository;
 

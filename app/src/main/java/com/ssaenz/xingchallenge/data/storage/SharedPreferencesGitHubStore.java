@@ -1,4 +1,4 @@
-package com.ssaenz.xingchallenge.storage;
+package com.ssaenz.xingchallenge.data.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;

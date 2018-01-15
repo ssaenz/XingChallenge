@@ -11,10 +11,10 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- *
+ * Helper to store GitHubRepositories into SharedPreferences
  */
 
-public class SharedPreferencesGitHubStore implements GitHubStore {
+public class SharedPreferencesGitHubStore {
 
     public static final String PREFS_NAME = "github_store_prefs";
     public static final String TIMESTAMP_KEY = "timestamp";

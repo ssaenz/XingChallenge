@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- *
+ * Encapsulates the data expiration and provides an API to data access
  */
 
 public class GitHubRepoCache {

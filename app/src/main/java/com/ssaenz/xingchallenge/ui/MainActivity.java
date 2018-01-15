@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.ssaenz.xingchallenge.R;
 import com.ssaenz.xingchallenge.data.network.EndpointFactory;
-import com.ssaenz.xingchallenge.data.network.GitHubService;
+import com.ssaenz.xingchallenge.data.network.GitHubEndpoint;
 import com.ssaenz.xingchallenge.domain.GitHubRepository;
 import com.ssaenz.xingchallenge.ui.adapter.GitHubRepoAdapter;
 import com.ssaenz.xingchallenge.ui.presenter.GitHubRepoPresenter;
@@ -33,15 +33,15 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     private static final int PAGE_SIZE = 10;
 
     private GitHubRepoAdapter mGitHubRepoAdapter;
-    private GitHubService mGitHubService;
+    private GitHubEndpoint mGitHubEndpoint;
     private CompositeDisposable mDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mGitHubService = new EndpointFactory<GitHubService>()
-                .createEndpoint(GitHubService.class, GITHUB_URL);
+        mGitHubEndpoint = new EndpointFactory<GitHubEndpoint>()
+                .createEndpoint(GitHubEndpoint.class, GITHUB_URL);
         mDisposable = new CompositeDisposable();
         loadAndConfigureUI();
         loadGitHubRepos(FIRST_PAGE, PAGE_SIZE);
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     }
 
     private void loadGitHubRepos(final int page, final int size) {
-        Disposable subscribe = mGitHubService.listRepos(XING_LOGIN, page, size, GITHUB_TOKEN)
+        Disposable subscribe = mGitHubEndpoint.listRepos(XING_LOGIN, page, size, GITHUB_TOKEN)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribeWith(new DisposableObserver<List<GitHubRepository>>() {

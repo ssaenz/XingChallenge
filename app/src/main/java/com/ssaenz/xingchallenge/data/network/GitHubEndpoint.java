@@ -13,7 +13,7 @@ import retrofit2.http.Query;
  * Interface for GitHub API access
  */
 
-public interface GitHubService {
+public interface GitHubEndpoint {
 
 
     @GET("users/{user}/repos")

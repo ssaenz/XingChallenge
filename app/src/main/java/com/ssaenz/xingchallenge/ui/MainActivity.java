@@ -10,8 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.ssaenz.xingchallenge.R;
-import com.ssaenz.xingchallenge.data.network.EndpointFactory;
-import com.ssaenz.xingchallenge.data.network.GitHubEndpoint;
+import com.ssaenz.xingchallenge.data.GitHubService;
 import com.ssaenz.xingchallenge.domain.GitHubRepository;
 import com.ssaenz.xingchallenge.ui.adapter.GitHubRepoAdapter;
 import com.ssaenz.xingchallenge.ui.presenter.GitHubRepoPresenter;
@@ -33,15 +32,14 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     private static final int PAGE_SIZE = 10;
 
     private GitHubRepoAdapter mGitHubRepoAdapter;
-    private GitHubEndpoint mGitHubEndpoint;
+    private GitHubService mGitHubService;
     private CompositeDisposable mDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mGitHubEndpoint = new EndpointFactory<GitHubEndpoint>()
-                .createEndpoint(GitHubEndpoint.class, GITHUB_URL);
+        mGitHubService = new GitHubService(this, GITHUB_URL);
         mDisposable = new CompositeDisposable();
         loadAndConfigureUI();
         loadGitHubRepos(FIRST_PAGE, PAGE_SIZE);
@@ -59,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     public boolean onLongClick(View v) {
         GitHubRepository repo = (GitHubRepository) v.getTag();
         openDialog(repo);
-        return false;
+        return true;
     }
 
     private void loadAndConfigureUI() {
@@ -77,15 +75,16 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             public void onScrollEnd(int totalItemCount) {
                 loadGitHubRepos(getNextPage(totalItemCount), PAGE_SIZE);
             }
+
+            private int getNextPage(int totalItemCount) {
+                return totalItemCount / PAGE_SIZE + 1;
+            }
         });
     }
 
-    private int getNextPage(int totalItemCount) {
-        return totalItemCount / PAGE_SIZE + 1;
-    }
 
     private void loadGitHubRepos(final int page, final int size) {
-        Disposable subscribe = mGitHubEndpoint.listRepos(XING_LOGIN, page, size, GITHUB_TOKEN)
+        Disposable subscribe = mGitHubService.listRepos(XING_LOGIN, page, size, GITHUB_TOKEN)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribeWith(new DisposableObserver<List<GitHubRepository>>() {
@@ -140,8 +139,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                     dialog.dismiss();
                     openBrowser(repo.getOwner().getHtmlUrl());
                 })
-                .setNegativeButton(R.string.button_cancel, (dialog, which) -> {
-                    dialog.dismiss();
-                }).show();
+                .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.dismiss()).show();
     }
 }

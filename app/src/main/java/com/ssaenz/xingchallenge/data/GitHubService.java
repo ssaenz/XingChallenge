@@ -1,7 +1,6 @@
 package com.ssaenz.xingchallenge.data;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ssaenz.xingchallenge.data.network.EndpointFactory;
 import com.ssaenz.xingchallenge.data.network.GitHubEndpoint;
@@ -34,7 +33,6 @@ public class GitHubService {
 
         List<GitHubRepository> storedRepos = cache.listRepos(page, size);
         if (storedRepos == null || storedRepos.isEmpty()) {
-            Log.i("ASDFASDFASDF0", "----------API");
             Observable<List<GitHubRepository>> sharedResult = endpoint.listRepos(user, page, size, token).share();
             sharedResult.observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
@@ -52,7 +50,6 @@ public class GitHubService {
                     });
             return sharedResult;
         }
-        Log.i("ASDFASDFASDF0", "----------cache");
         return Observable.just(storedRepos);
 
     }

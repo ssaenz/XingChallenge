@@ -1,7 +1,5 @@
 package com.ssaenz.xingchallenge;
 
-import com.ssaenz.xingchallenge.domain.GitHubRepository;
-import com.ssaenz.xingchallenge.domain.GitHubUser;
 import com.ssaenz.xingchallenge.ui.presenter.GitHubRepoPresenter;
 import com.ssaenz.xingchallenge.ui.presenter.GitHubRepoView;
 
@@ -10,9 +8,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import static com.ssaenz.xingchallenge.GitHubReposMother.MOCK_OWNER_LOGIN;
+import static com.ssaenz.xingchallenge.GitHubReposMother.createMockData;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 
@@ -21,8 +18,6 @@ import static org.mockito.Mockito.verify;
  */
 public class PresenterTest {
 
-    private static final String MOCK_OWNER_LOGIN = "xing";
-    private static final String MOCK_OWNER_URL = "https://github.com/xing";
     private static final int MOCK_REPOS_SIZE = 10;
 
     @Mock
@@ -51,27 +46,5 @@ public class PresenterTest {
         verify(repoView).setFork(true);
     }
 
-    private List<GitHubRepository> createMockData (int size) {
-        List<GitHubRepository> repositories = new ArrayList<>();
-        for (int i = 0; i < size; i ++) {
-            repositories.add(createRepo("repo " + i, "Description repo " + i, i % 2 == 0));
-        }
-        return repositories;
-    }
 
-    private GitHubRepository createRepo (String name, String description, boolean isFork) {
-        GitHubRepository repo = new GitHubRepository();
-        repo.setName(name);
-        repo.setDescription(description);
-        repo.setOwner(createOwner());
-        repo.setFork(isFork);
-        return repo;
-    }
-
-    private GitHubUser createOwner() {
-        GitHubUser user = new GitHubUser();
-        user.setLogin(MOCK_OWNER_LOGIN);
-        user.setHtmlUrl(MOCK_OWNER_URL);
-        return user;
-    }
 }

@@ -8,3 +8,10 @@
 
 I've really enjoyed coding this challenge. I hope you enjoy too reading my solution.
 
+
+
+Feedback
+
+The target of the presenter pattern is to implements the business logic with the data. So, the presenter have the responsability to load the data from the service layer. In the activity, we only deal with the view and handle UI events. Ir orther to process the data that came from events, it is better to create methods into the presenter to handle this data.
+It is better to use a deppendency injection engine in orther to separate responsabilities and let this engine to instanciate our buisness logic.
+
